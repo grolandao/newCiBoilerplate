@@ -1,0 +1,2 @@
+//Aqui vai ficar os erros o PHP.
+//Favor não apagar esse arquivo, apenas limpar

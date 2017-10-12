@@ -1,0 +1,33 @@
+RewriteEngine on
+
+RewriteCond %{HTTP_HOST} ^www\.(.*)$ [NC]
+RewriteRule ^(.*)$ http://%1%{REQUEST_URI} [R=301,QSA,NC,L]
+
+RewriteCond $1 !^(index\.php|assets|robots\.txt)
+RewriteRule ^(.*)$ index.php?/$1 [L]
+
+<FilesMatch ".(flv|gif|jpg|jpeg|png|ico|swf|pdf)$">
+    Header set Cache-Control "max-age=864000"
+</FilesMatch>
+
+<FilesMatch ".(js|css|php)$">
+    Header set Cache-Control "max-age=0"
+</FilesMatch>
+
+php_value memory_limit 30G
+php_value post_max_size 30G
+php_value upload_max_filesize 30G
+
+<IfModule mod_php5.c>
+    php_value memory_limit 30G
+    php_value post_max_size 30G
+    php_value upload_max_filesize 30G
+    php_value max_execution_time 3000000
+    php_value max_input_time 3000000
+</IfModule>
+
+php_flag display_startup_errors on
+php_flag display_errors on
+php_flag html_errors on
+php_flag  log_errors on
+php_value error_log  /var/www/html/app/assets/upload/PHP_errors.txt
