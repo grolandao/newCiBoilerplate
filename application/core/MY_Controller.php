@@ -25,6 +25,38 @@ class  MY_Controller extends CI_Controller
 
     }
 
+    protected function generatePassword($size = 6, $uppercase = true, $numbers = true, $symbols = false)
+    {
+        $lmin = 'abcdefghijklmnopqrstuvwxyz';
+        $lmai = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        $num = '1234567890';
+        $simb = '!@#$%*-';
+        $result = '';
+        $characters = '';
+        $characters .= $lmin;
+        if ($uppercase) $characters .= $lmai;
+        if ($numbers) $characters .= $num;
+        if ($symbols) $characters .= $simb;
+        $len = strlen($characters);
+        for ($n = 1; $n <= $size; $n++) {
+            $rand = mt_rand(1, $len);
+            $result .= $characters[$rand-1];
+        }
+        return $result;
+    }
+
+    protected function forgotPassword($email = '', $adm = false)
+    {
+        if($email !== ''){
+            $newPassword = $this->generatePassword();
+            if($adm === true){
+                $this->load->model('admin_model');
+            }else{
+                $this->load->model('user_model');
+            }
+        }
+    }
+
     protected function get_permissions()
     {
         $this->load->model('userPermissions_model');
