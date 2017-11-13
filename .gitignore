@@ -5,10 +5,12 @@
 !*/cache/index.html
 !*/cache/.htaccess
 
+.idea/
 assets/upload/
 !assets/upload/PHP_errors.txt
 #codeigniter 3
 application/logs/
+application/cache/
 !application/logs/index.html
 !application/logs/.htaccess
 /vendor/
