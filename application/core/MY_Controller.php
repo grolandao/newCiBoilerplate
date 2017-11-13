@@ -48,16 +48,18 @@ class  MY_Controller extends CI_Controller
     protected function forgotPassword($email = '', $adm = false)
     {
         if($email !== ''){
-            $newPassword = $this->generatePassword();
+            $newPassword = MD5($this->generatePassword());
             if($adm === true){
                 $this->load->model('admin_model');
+                $this->admin_model->update(array('email' => $email), array('password' => $newPassword, 'force_password' => 1));
             }else{
                 $this->load->model('user_model');
+                $this->user_model->update(array('email' => $email), array('password' => $newPassword, 'force_password' => 1));
             }
         }
     }
 
-    protected function get_permissions()
+    protected function getPermissions()
     {
         $this->load->model('userPermissions_model');
         $permissions = $this->userPermissions_model->get($this->data['me']->user_type);
@@ -67,12 +69,16 @@ class  MY_Controller extends CI_Controller
         $this->data['me']->permissions = $permissions;
     }
 
-    private function login()
+    private function login($admin = false)
     {
-        $hash = $this->input->post('hash');
-        if ($hash) {
+        if($admin == true){
+            $this->load->model('admin_model');
+        }else{
             $this->load->model('user_model');
             $this->data['me'] = $this->user_model->get_related(array('hash' => $hash), 1)->result();
+        }
+        $hash = $this->input->post('hash');
+        if ($hash) {
             if (count($this->data['me']) === 0) {
                 $this->data['output']['error'] = array('100' => 'Usuário ou senha invalidos');
             } else {

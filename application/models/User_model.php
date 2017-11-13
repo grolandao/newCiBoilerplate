@@ -8,23 +8,23 @@ class User_model extends MY_Model
         parent::__construct();
     }
 
-    public function get_related(array $where = array(), $limit = null, $offset = 0)
+    public function get_related(array $where = array(), $fields = null,$limit = null, $offset = 0)
     {
-        $this->db->join('userType', $this->getAlias() . '.userType_id = usertype.id', 'left');
+        $this->db->join('type', $this->getAlias() . '.type_id = type.id', 'left');
         $this->db->select('
-            userType.name AS userType_name,
+            type.name AS type_name,
         ');
-        return $this->get($where, $limit, $offset);
+        return $this->get($where, $fields, $limit, $offset);
     }
 
-    public function get(array $where = array(), $limit = null, $offset = 0)
+    public function get(array $where = array(), $fields = null, $limit = null, $offset = 0)
     {
         $this->db->order_by($this->getAlias() . '.name', 'ASC');
         if (isset($where['q'])) {
             $this->db->where('(' . $this->getAlias() . '.`name` LIKE \'%' . $where['q'] . '%\' ESCAPE \'!\' OR  `' . $this->getAlias() . '`.`username` LIKE \'%' . $where['q'] . '%\' ESCAPE \'!\')');
             unset($where['q']);
         }
-        return parent::get($where, $limit, $offset);
+        return parent::get($where, $fields, $limit, $offset);
     }
 
 }
