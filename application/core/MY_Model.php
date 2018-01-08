@@ -17,7 +17,7 @@ class MY_Model extends CI_Model {
     {
         if($this->table === NULL) {
             $this->table = get_called_class();
-            $this->table = explode('_', $this->table);
+            $this->table = explode('_model', $this->table);
             $this->table = current($this->table);
             $this->table = strtolower($this->table);
         }
